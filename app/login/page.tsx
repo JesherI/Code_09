@@ -59,7 +59,7 @@ export default function LoginPage() {
             <img
               src="/CODE_09-Transparente.svg"
               alt="logo"
-              className="h-8 w-8"
+              className="h-16 w-auto"
             />
           </Link>
           <h1 className="mt-6 text-2xl font-semibold tracking-tight">

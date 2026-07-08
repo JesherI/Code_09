@@ -252,7 +252,7 @@ export default function DashboardPage() {
           <img
             src="/CODE_09-Transparente.svg"
             alt="logo"
-            className="h-7 w-7"
+            className="h-10 w-auto"
           />
         </Link>
         <div className="flex items-center gap-3">

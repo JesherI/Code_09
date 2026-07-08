@@ -26,7 +26,7 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
 		const AMOUNTY = 60;
 
 		const scene = new THREE.Scene();
-		scene.fog = new THREE.Fog(0xffffff, 2000, 10000);
+		scene.fog = new THREE.Fog(0x000000, 2000, 10000);
 
 		const camera = new THREE.PerspectiveCamera(
 			60,
@@ -46,11 +46,20 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
 
 		containerRef.current.appendChild(renderer.domElement);
 
-		// Create particles
+		// Create particles with gradient
 		const positions: number[] = [];
 		const colors: number[] = [];
 
 		const geometry = new THREE.BufferGeometry();
+
+		// Gradient stops: indigo → cyan
+		// Dark mode: muted glow, Light mode: soft pastel
+		const c1 = theme === 'dark'
+			? { r: 0.39, g: 0.40, b: 0.95 }   // indigo-500
+			: { r: 0.51, g: 0.55, b: 0.97 };  // indigo-400
+		const c2 = theme === 'dark'
+			? { r: 0.02, g: 0.71, b: 0.83 }   // cyan-500
+			: { r: 0.13, g: 0.83, b: 0.93 };  // cyan-400
 
 		for (let ix = 0; ix < AMOUNTX; ix++) {
 			for (let iy = 0; iy < AMOUNTY; iy++) {
@@ -59,11 +68,14 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
 				const z = iy * SEPARATION - (AMOUNTY * SEPARATION) / 2;
 
 				positions.push(x, y, z);
-				if (theme === 'dark') {
-					colors.push(200, 200, 200);
-				} else {
-					colors.push(0, 0, 0);
-				}
+
+				// Diagonal gradient based on grid position
+				const t = (ix / AMOUNTX + iy / AMOUNTY) / 2;
+				colors.push(
+					c1.r + (c2.r - c1.r) * t,
+					c1.g + (c2.g - c1.g) * t,
+					c1.b + (c2.b - c1.b) * t,
+				);
 			}
 		}
 
@@ -74,11 +86,12 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
 		geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
 
 		const material = new THREE.PointsMaterial({
-			size: 8,
+			size: 10,
 			vertexColors: true,
 			transparent: true,
-			opacity: 0.8,
+			opacity: 0.9,
 			sizeAttenuation: true,
+			blending: THREE.AdditiveBlending,
 		});
 
 		const points = new THREE.Points(geometry, material);

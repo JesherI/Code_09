@@ -29,7 +29,7 @@ export default function Home() {
           <img
             src="/CODE_09-Transparente.svg"
             alt="logo"
-            className="h-10 w-10"
+            className="h-12 w-auto"
           />
         </Link>
         <nav className="flex items-center gap-4">
@@ -56,7 +56,7 @@ export default function Home() {
           <img
             src="/CODE_09-Transparente.svg"
             alt="logo"
-            className="mx-auto mb-8 h-24 w-24 opacity-80"
+            className="mx-auto mb-8 h-40 w-auto opacity-80 drop-shadow-[0_0_40px_rgba(99,102,241,0.4)]"
           />
           <p className="mx-auto mb-10 max-w-md text-lg text-foreground/60">
             Store, visualize, and manage your prompts with a clean,

@@ -1,5 +1,5 @@
 import { initializeApp, getApps } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
+import { getAuth, browserSessionPersistence, setPersistence } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
@@ -22,3 +22,8 @@ function getFirebaseApp() {
 const app = getFirebaseApp();
 export const auth = app ? getAuth(app) : null;
 export const db = app ? getFirestore(app) : null;
+
+// Never persist auth across sessions — session-only (cleared on tab close)
+if (auth && typeof window !== 'undefined') {
+  setPersistence(auth, browserSessionPersistence).catch(() => {});
+}
